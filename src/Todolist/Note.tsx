@@ -1,10 +1,16 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import CircularProgress from "@mui/material/CircularProgress";
-
+interface TodoDetail {
+  name: string;
+  status: string;
+}
 export default function Note() {
-  const params = useParams();
-  const [todoDetail, setTodoDetail] = useState({});
+  const params = useParams<{ id: string }>();
+  const [todoDetail, setTodoDetail] = useState<TodoDetail>({
+    name: "",
+    status: "",
+  });
   const [isLoaded, setIsLoaded] = useState(false);
   useEffect(() => {
     fetch(`/api/todos/${params.id}`)

@@ -1,5 +1,12 @@
+import { ReactNode } from "react";
 import "./assets/todo.css";
-export default function Modal({ isOpen, onClose, children }) {
+
+interface ModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+  children: ReactNode;
+}
+export default function Modal({ isOpen, onClose, children }: ModalProps) {
   if (isOpen) {
     return (
       <div className="modal">

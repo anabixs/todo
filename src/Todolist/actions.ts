@@ -1,15 +1,28 @@
 import { v4 as uuidv4 } from "uuid";
 
-export async function fetchTodos() {
+interface Todo {
+  id: string;
+  name: string;
+  status: string;
+}
+
+interface ApiResponse {
+  todos?: Todo[];
+  todo?: Todo;
+}
+
+export async function fetchTodos(): Promise<Todo[]> {
   try {
     const response = await fetch("/api/todos");
-    const data = await response.json();
-    return data.todos;
+    const data: ApiResponse = await response.json();
+    return data.todos || [];
   } catch (error) {
     console.error(error);
+    return [];
   }
 }
-export async function addTodo(newNote) {
+
+export async function addTodo(newNote: string): Promise<Todo | undefined> {
   try {
     const newId = uuidv4();
     const newStatus = "non-completed";
@@ -25,13 +38,14 @@ export async function addTodo(newNote) {
         },
       }),
     });
-    const data = await response.json();
+    const data: ApiResponse = await response.json();
     return data.todo;
   } catch (error) {
     console.error(error);
   }
 }
-export async function deleteTodo(id) {
+
+export async function deleteTodo(id: number): Promise<boolean> {
   try {
     const response = await fetch(`/api/todos/${id}`, {
       method: "DELETE",
@@ -39,10 +53,14 @@ export async function deleteTodo(id) {
     return response.status === 204;
   } catch (error) {
     console.error(error);
+    return false;
   }
 }
 
-export async function updateTodoStatus(id, newStatus) {
+export async function updateTodoStatus(
+  id: number,
+  newStatus: string
+): Promise<boolean> {
   try {
     const response = await fetch(`/api/todos/${id}`, {
       method: "PATCH",
@@ -59,5 +77,6 @@ export async function updateTodoStatus(id, newStatus) {
     return response.status === 200;
   } catch (error) {
     console.error(error);
+    return false;
   }
 }

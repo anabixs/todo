@@ -1,6 +1,12 @@
 import Square from "./Square.tsx";
-export default function Board({ xIsNext, squares, onPlay }) {
-  function handleClick(i) {
+
+interface BoardProps {
+  xIsNext: boolean;
+  squares: string[];
+  onPlay: (squares: string[]) => void;
+}
+export default function Board({ xIsNext, squares, onPlay }: BoardProps) {
+  function handleClick(i: number) {
     if (squares[i] || calculateWinner(squares)) {
       return;
     }
@@ -36,7 +42,7 @@ export default function Board({ xIsNext, squares, onPlay }) {
     </>
   );
 }
-function calculateWinner(squares) {
+function calculateWinner(squares: string[]): string | null {
   const lines = [
     [0, 1, 2],
     [3, 4, 5],

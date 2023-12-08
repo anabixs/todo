@@ -1,21 +1,24 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import CircularProgress from "@mui/material/CircularProgress";
 import { Link } from "react-router-dom";
-import Modal from "./Modal.tsx";
+import Modal from "./Modal";
 import "./assets/todo.css";
-import {
-  fetchTodos,
-  addTodo,
-  deleteTodo,
-  updateTodoStatus,
-} from "./actions.ts";
+import { fetchTodos, addTodo, deleteTodo, updateTodoStatus } from "./actions";
 
-export default function Todo() {
+interface TodoItem {
+  id: number;
+  name: string;
+  status: string;
+}
+
+interface TodoProps {}
+
+const Todo: React.FC<TodoProps> = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const [newNote, setNewNote] = useState("");
-  const [status, setStatus] = useState("all");
-  const [sort, setSort] = useState("no-sort");
-  const [todo, setTodos] = useState([]);
+  const [newNote, setNewNote] = useState<string>("");
+  const [status, setStatus] = useState<string>("all");
+  const [sort, setSort] = useState<string>("no-sort");
+  const [todo, setTodos] = useState<TodoItem[]>([]);
   const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
@@ -29,7 +32,7 @@ export default function Todo() {
     setIsLoaded(false);
     if (newNote !== "") {
       addTodo(newNote).then((addData) => {
-        setTodos((prevtodos) => [...prevtodos, addData]);
+        setTodos((prevTodos) => [...prevTodos, addData]);
         setIsLoaded(true);
       });
       setNewNote("");
@@ -37,7 +40,7 @@ export default function Todo() {
     }
   }
 
-  function deleteNote(id) {
+  function deleteNote(id: number) {
     setIsLoaded(false);
     deleteTodo(id).then((isDeleted) => {
       if (isDeleted) {
@@ -54,11 +57,12 @@ export default function Todo() {
   function onOpen() {
     setIsOpen(true);
   }
+
   function onClose() {
     setIsOpen(false);
   }
 
-  function handleStatusChange(newStatus, id) {
+  function handleStatusChange(newStatus: string, id: number) {
     updateTodoStatus(id, newStatus).then((isUpdated) => {
       if (isUpdated) {
         setTodos((prevTodos) =>
@@ -69,13 +73,15 @@ export default function Todo() {
       }
     });
   }
-  function handleKeyPress(event) {
+
+  function handleKeyPress(event: React.KeyboardEvent<HTMLInputElement>) {
     if (event.key === "Enter" || event.keyCode === 13) {
       addNewNote();
-    } else if (event.key === "Esc" || event.keyCode === 27) {
+    } else if (event.key === "Escape" || event.keyCode === 27) {
       onClose();
     }
   }
+
   return (
     <>
       {!isLoaded && (
@@ -124,7 +130,7 @@ export default function Todo() {
               value={note.status}
               onChange={(e) => handleStatusChange(e.target.value, note.id)}
             >
-              <option value="non-completed">Non comleted</option>
+              <option value="non-completed">Non completed</option>
               <option value="completed">Completed</option>
             </select>
             <button onClick={() => deleteNote(note.id)}>X</button>
@@ -153,4 +159,6 @@ export default function Todo() {
       </Modal>
     </>
   );
-}
+};
+
+export default Todo;

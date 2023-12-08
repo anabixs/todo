@@ -1,19 +1,6 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Link, Outlet } from "react-router-dom";
 
-// body to send to api in post/patch requests
-// JSON.stringify({
-//   data: {
-//     type: "todo",
-//     attributes: { name: "", status: "" },
-//   },
-// })
-
-// fetch('/api/todos')
-// let first = await fetch("/api/todos");
-// let second = await fetch("/api/todos");
-// console.log(first);
-// console.log(second);
 export default function Home() {
   const [activeComponent, setActiveComponent] = useState("");
 
