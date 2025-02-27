@@ -6,7 +6,7 @@ import "./assets/todo.css";
 import { fetchTodos, addTodo, deleteTodo, updateTodoStatus } from "./actions";
 
 interface TodoItem {
-  id: number;
+  id: string;
   name: string;
   status: string;
 }
@@ -32,7 +32,9 @@ const Todo: React.FC<TodoProps> = () => {
     setIsLoaded(false);
     if (newNote !== "") {
       addTodo(newNote).then((addData) => {
-        setTodos((prevTodos) => [...prevTodos, addData]);
+        if (addData) {
+          setTodos((prevTodos) => [...prevTodos, addData]);
+        }
         setIsLoaded(true);
       });
       setNewNote("");
@@ -40,7 +42,7 @@ const Todo: React.FC<TodoProps> = () => {
     }
   }
 
-  function deleteNote(id: number) {
+  function deleteNote(id: string) {
     setIsLoaded(false);
     deleteTodo(id).then((isDeleted) => {
       if (isDeleted) {
@@ -62,7 +64,7 @@ const Todo: React.FC<TodoProps> = () => {
     setIsOpen(false);
   }
 
-  function handleStatusChange(newStatus: string, id: number) {
+  function handleStatusChange(newStatus: string, id: string) {
     updateTodoStatus(id, newStatus).then((isUpdated) => {
       if (isUpdated) {
         setTodos((prevTodos) =>

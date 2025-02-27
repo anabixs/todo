@@ -1,10 +1,10 @@
-import { createServer, Model } from "miragejs";
+import { createServer, Model, Response } from "miragejs";
 import { v4 } from "uuid";
 
 export function makeServer() {
   return createServer({
     models: {
-      todo: Model,
+      todo: Model, // Оставляем в единственном числе
     },
 
     seeds(server) {
@@ -34,28 +34,45 @@ export function makeServer() {
       this.namespace = "api";
 
       this.get("/todos", (schema) => {
-        return schema.todos.all();
+        return schema.all("todo");
       });
+
       this.get("/todos/:id", (schema, request) => {
         const id = request.params.id;
-        return schema.todos.find(id);
+        const todo = schema.find("todo", id);
+        return todo ?? new Response(404, {}, { error: "Todo not found" });
       });
-      this.post("/todos", function (schema) {
-        const attrs = this.normalizedRequestAttrs("todo");
-        return schema.todos.create({
+
+      this.post("/todos", (schema, request) => {
+        const attrs = JSON.parse(request.requestBody);
+        return schema.create("todo", {
           ...attrs,
           id: v4(),
           status: "non-completed",
         });
       });
-      this.patch("/todos/:id", function (schema, request) {
+
+      this.patch("/todos/:id", (schema, request) => {
         const id = request.params.id;
-        const attrs = this.normalizedRequestAttrs("todo");
-        return schema.todos.find(id).update(attrs);
+        const todo = schema.find("todo", id);
+
+        if (todo) {
+          const attrs = JSON.parse(request.requestBody);
+          todo.update(attrs);
+          return todo;
+        }
+
+        return new Response(404, {}, { error: "Todo not found" });
       });
+
       this.delete("/todos/:id", (schema, request) => {
         const id = request.params.id;
-        return schema.todos.find(id).destroy();
+        const todo = schema.find("todo", id);
+        if (todo) {
+          todo.destroy();
+          return new Response(204, {}, {});
+        }
+        return new Response(404, {}, { error: "Todo not found" });
       });
     },
   });

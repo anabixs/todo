@@ -45,7 +45,7 @@ export async function addTodo(newNote: string): Promise<Todo | undefined> {
   }
 }
 
-export async function deleteTodo(id: number): Promise<boolean> {
+export async function deleteTodo(id: string): Promise<boolean> {
   try {
     const response = await fetch(`/api/todos/${id}`, {
       method: "DELETE",
@@ -58,7 +58,7 @@ export async function deleteTodo(id: number): Promise<boolean> {
 }
 
 export async function updateTodoStatus(
-  id: number,
+  id: string,
   newStatus: string
 ): Promise<boolean> {
   try {
