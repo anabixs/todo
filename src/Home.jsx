@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Link, Outlet } from "react-router-dom";
 
 // body to send to api in post/patch requests

@@ -1,4 +1,4 @@
-import Square from "./Square.tsx";
+import Square from "./Square.jsx";
 export default function Board({ xIsNext, squares, onPlay }) {
   function handleClick(i) {
     if (squares[i] || calculateWinner(squares)) {

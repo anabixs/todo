@@ -1,5 +1,5 @@
 import { useState } from "react";
-import Board from "./Board.tsx";
+import Board from "./Board.jsx";
 export default function Game() {
   const [history, setHistory] = useState([Array(9).fill(null)]);
   const [currentMove, setCurrentMove] = useState(0);

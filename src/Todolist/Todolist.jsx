@@ -1,14 +1,14 @@
 import { useState, useEffect } from "react";
 import CircularProgress from "@mui/material/CircularProgress";
 import { Link } from "react-router-dom";
-import Modal from "./Modal.tsx";
+import Modal from "./Modal.jsx";
 import "./assets/todo.css";
 import {
   fetchTodos,
   addTodo,
   deleteTodo,
   updateTodoStatus,
-} from "./actions.ts";
+} from "./actions.js";
 
 export default function Todo() {
   const [isOpen, setIsOpen] = useState(false);

@@ -1,12 +1,12 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import Game from "./Tictactoe/Game.tsx";
-import Todolist from "./Todolist/Todolist.tsx";
-import Home from "./Home.tsx";
-import Note from "./Todolist/Note.tsx";
+import Game from "./Tictactoe/Game.jsx";
+import Todolist from "./Todolist/Todolist.jsx";
+import Home from "./Home.jsx";
+import Note from "./Todolist/Note.jsx";
 import "./index.css";
-import { makeServer } from "./server";
+import { makeServer } from "./server.js";
 
 makeServer();
 
@@ -30,7 +30,7 @@ const router = createBrowserRouter([
     ],
   },
 ]);
-ReactDOM.createRoot(document.getElementById("root")!).render(
+ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <RouterProvider router={router} />
   </React.StrictMode>
